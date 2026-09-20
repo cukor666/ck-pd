@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "noEmit": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "vite.config.ts"
+  ],
+  "exclude": [
+    // wailsjs 目录下是 Wails 自动生成的代码：
+    //   - *.d.ts 仍然可通过 import 提供类型（skipLibCheck 已开启）；
+    //   - *.js   里对 window['go'] 等全局对象的访问会被 noImplicitAny 报错，
+    //             因此只做类型引用，不纳入类型检查。
+    "wailsjs/**/*.js"
+  ]
+}

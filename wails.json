@@ -1,0 +1,19 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "ck-pd",
+  "outputfilename": "ck-pd",
+  "frontend:install": "pnpm install",
+  "frontend:build": "pnpm run build",
+  "frontend:dev:watcher": "pnpm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "cukorzhong",
+    "email": "2450808861@qq.com"
+  },
+  "info": {
+    "productName": "ck-pd 密码管理器",
+    "productVersion": "1.0.0",
+    "copyright": "cukorzhong",
+    "comments": "基于 Wails v2 + Go + Vue 3 的本地加密密码管理器"
+  }
+}

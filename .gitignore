@@ -1,0 +1,28 @@
+# 构建产物
+build/bin/
+*.exe
+*.dll
+
+# 前端依赖与产物
+node_modules/
+frontend/dist/
+
+# Go 测试与覆盖率
+*.test
+*.out
+coverage.*
+
+# 编辑器与系统文件
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# 本地保险库数据：即使误放到仓库目录，也绝不能被提交。
+# 这是最后一道防线——.ckpd 文件在磁盘上始终是密文，但仍不应入库。
+*.ckpd
+*.ckpd-backup
+*.before-restore-*
+data/
+settings.json

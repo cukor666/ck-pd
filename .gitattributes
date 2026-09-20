@@ -1,0 +1,55 @@
+# 换行符与二进制文件策略
+#
+# 为什么需要这个文件：Windows 上 git 默认 core.autocrlf=true，会把仓库里的
+# LF 转成工作区的 CRLF，导致每次 checkout 都出现「全部文件被修改」的虚假 diff，
+# 也让 Linux/macOS 上编译时看到混合换行符。
+#
+# 策略：仓库内统一存 LF，工作区按文件类型决定换行符。
+
+# 默认：自动识别文本文件，仓库内使用 LF
+* text=auto eol=lf
+
+# Go 源码与 go.mod/go.sum：一律 LF（gofmt 也偏好 LF）
+*.go        text eol=lf
+go.mod      text eol=lf
+go.sum      text eol=lf
+
+# 前端源码与配置：LF
+*.ts        text eol=lf
+*.vue       text eol=lf
+*.css       text eol=lf
+*.html      text eol=lf
+*.json      text eol=lf
+*.yaml      text eol=lf
+*.yml       text eol=lf
+*.md        text eol=lf
+
+# PowerShell 脚本：工作区使用 CRLF。
+# Windows 上部分工具链与编辑器对 .ps1 的 CRLF 兼容性更好；
+# PowerShell 7 本身也能正确处理 LF，但这里以稳妥为先。
+*.ps1       text eol=crlf
+
+# 批处理脚本必须使用 CRLF，否则在部分 Windows 环境下会解析异常
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+
+# 二进制文件：不做任何换行符转换，且不参与 diff 文本化
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.woff      binary
+*.woff2     binary
+*.ttf       binary
+*.exe       binary
+*.dll       binary
+*.syso      binary
+
+# 保险库与备份属于加密二进制数据，禁止文本化 diff 与换行符转换
+*.ckpd         binary
+*.ckpd-backup  binary
+
+# 锁文件：让 GitHub 折叠显示而不是展开巨大 diff
+frontend/pnpm-lock.yaml  linguist-generated=true
+frontend/wailsjs/**      linguist-generated=true

@@ -1,0 +1,236 @@
+@import 'tailwindcss';
+
+/* 显式声明 dark 变体，使主题模式完全由 <html data-theme> 控制，
+   而不依赖操作系统的 prefers-color-scheme。 */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* 设计令牌：整体走深色优先的克制风格，强调色使用靛蓝，
+   避免在密码管理器中过度使用高饱和色分散注意力。 */
+@theme {
+  --color-ink-950: oklch(0.16 0.02 265);
+  --color-ink-900: oklch(0.21 0.025 265);
+  --color-ink-850: oklch(0.25 0.028 265);
+  --color-ink-800: oklch(0.29 0.03 265);
+  --color-ink-700: oklch(0.38 0.03 265);
+  --color-ink-600: oklch(0.48 0.028 265);
+  --color-ink-400: oklch(0.68 0.02 265);
+  --color-ink-200: oklch(0.86 0.012 265);
+
+  --color-accent-400: oklch(0.72 0.15 275);
+  --color-accent-500: oklch(0.63 0.19 275);
+  --color-accent-600: oklch(0.55 0.2 275);
+
+  --font-sans: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Cascadia Mono', 'JetBrains Mono', Consolas, 'Courier New', monospace;
+}
+
+/* 主题变量：默认值即深色，浅色由 [data-theme='light'] 覆盖。 */
+:root {
+  --app-bg: oklch(0.16 0.02 265);
+  --app-bg-elevated: oklch(0.21 0.025 265);
+  --app-bg-panel: oklch(0.23 0.026 265);
+  --app-border: oklch(0.32 0.03 265);
+  --app-text: oklch(0.95 0.008 265);
+  --app-text-muted: oklch(0.72 0.02 265);
+  --app-accent: oklch(0.63 0.19 275);
+  --app-accent-hover: oklch(0.68 0.19 275);
+  --app-danger: oklch(0.63 0.2 25);
+  --app-warn: oklch(0.75 0.15 75);
+  --app-ok: oklch(0.7 0.15 150);
+  --app-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.6);
+}
+
+:root[data-theme='light'] {
+  --app-bg: oklch(0.98 0.004 265);
+  --app-bg-elevated: oklch(1 0 0);
+  --app-bg-panel: oklch(0.97 0.006 265);
+  --app-border: oklch(0.88 0.008 265);
+  --app-text: oklch(0.24 0.02 265);
+  --app-text-muted: oklch(0.48 0.02 265);
+  --app-accent: oklch(0.55 0.2 275);
+  --app-accent-hover: oklch(0.5 0.2 275);
+  --app-danger: oklch(0.55 0.22 25);
+  --app-warn: oklch(0.6 0.14 75);
+  --app-ok: oklch(0.52 0.14 150);
+  --app-shadow: 0 10px 30px -14px rgb(0 0 0 / 0.18);
+}
+
+@layer base {
+  html,
+  body,
+  #app {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--app-bg);
+    color: var(--app-text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.55;
+    /* 密码管理器中禁用文本选择更符合直觉，需要选择的地方单独开启。 */
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+
+  /* 阻止拖拽文件到窗口导致 WebView 导航到本地文件 */
+  body {
+    overflow: hidden;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--app-border);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--app-text-muted);
+  }
+}
+
+@layer components {
+  .panel {
+    background-color: var(--app-bg-panel);
+    border: 1px solid var(--app-border);
+    border-radius: 0.75rem;
+  }
+
+  .field {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    background-color: var(--app-bg-elevated);
+    border: 1px solid var(--app-border);
+    border-radius: 0.5rem;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .field:focus {
+    border-color: var(--app-accent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--app-accent) 25%, transparent);
+  }
+
+  .field:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: var(--app-accent);
+    color: white;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--app-accent-hover);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    border-color: var(--app-border);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background-color: color-mix(in oklab, var(--app-text) 8%, transparent);
+  }
+
+  .btn-danger {
+    background-color: transparent;
+    border-color: color-mix(in oklab, var(--app-danger) 60%, transparent);
+    color: var(--app-danger);
+  }
+  .btn-danger:hover:not(:disabled) {
+    background-color: color-mix(in oklab, var(--app-danger) 15%, transparent);
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color 0.15s ease;
+  }
+  .icon-btn:hover:not(:disabled) {
+    background-color: color-mix(in oklab, var(--app-text) 10%, transparent);
+  }
+  .icon-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    border: 1px solid var(--app-border);
+    color: var(--app-text-muted);
+  }
+}
+
+@layer utilities {
+  .text-muted {
+    color: var(--app-text-muted);
+  }
+  .selectable {
+    user-select: text;
+    cursor: text;
+  }
+  .mono {
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+  }
+  .no-drag {
+    -webkit-user-drag: none;
+  }
+  .card-shadow {
+    box-shadow: var(--app-shadow);
+  }
+}

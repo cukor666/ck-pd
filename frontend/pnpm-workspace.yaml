@@ -1,0 +1,9 @@
+# pnpm 11 起，构建脚本白名单从 package.json 的 pnpm 字段迁移到本文件。
+#
+# 只允许确实需要原生构建的依赖执行安装脚本；其余依赖的 postinstall
+# 一律被 pnpm 拦截，以降低供应链攻击面。
+#
+# esbuild 需要执行安装脚本以放置原生二进制（Vite 的依赖），
+# 因此显式允许；若将来新增需要构建的依赖，请在此逐项评估后添加。
+allowBuilds:
+  esbuild: true
